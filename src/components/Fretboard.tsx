@@ -28,8 +28,8 @@ function computeRootFret(
   let fret = (((rootIdx - openNote) % 12) + 12) % 12;
   const offsets = voicing.filter((v): v is number => typeof v === "number");
   const minOffset = offsets.length ? Math.min(...offsets) : 0;
-  // 押弦フレットがすべて 1 以上になるまで 1 オクターブずつ上に移動
-  while (fret + minOffset < 1) fret += 12;
+  // 押弦フレットがすべて 0 以上（開放弦は許可）になるまで 1 オクターブずつ上に移動
+  while (fret + minOffset < 0) fret += 12;
   return fret;
 }
 
