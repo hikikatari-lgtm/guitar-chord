@@ -24,7 +24,7 @@ export const FORMS: ChordForm[] = [
   // ── 5弦ルート ───────────────────────────────
   { stringRoot: 5, quality: "maj",  voicing: ["X", 0, 2, 2, 2, 0] }, // A-shape
   { stringRoot: 5, quality: "min",  voicing: ["X", 0, 2, 2, 1, 0] }, // Am-shape
-  { stringRoot: 5, quality: "maj7", voicing: ["X", 0, 2, 1, 2, "X"] }, // Amaj7 4音
+  { stringRoot: 5, quality: "maj7", voicing: ["X", 0, 2, 1, 2, 0] }, // R-5-7-3-5 フル5音（1弦まで）
   { stringRoot: 5, quality: "7",    voicing: ["X", 0, 2, 0, 2, 0] }, // A7-shape
   { stringRoot: 5, quality: "m7",   voicing: ["X", 0, 2, 0, 1, 0] }, // Am7-shape
   { stringRoot: 5, quality: "dim7", voicing: ["X", 0, 1, -1, 1, "X"] }, // R-♭5-♭♭7-♭3
