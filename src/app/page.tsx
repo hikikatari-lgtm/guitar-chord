@@ -1,65 +1,147 @@
-import Image from "next/image";
+"use client";
+
+import { useState } from "react";
+import {
+  ALL_ROOTS,
+  QUALITIES,
+  QUALITY_LABEL,
+  QUALITY_SUFFIX,
+  type ChordQuality,
+} from "@/lib/music";
+import { findForm } from "@/data/chord-forms";
+import Fretboard from "@/components/Fretboard";
 
 export default function Home() {
+  const [stringRoot, setStringRoot] = useState<6 | 5>(6);
+  const [quality, setQuality] = useState<ChordQuality>("maj");
+  const [rootNote, setRootNote] = useState<string>("F");
+  const [display, setDisplay] = useState<"degree" | "note">("degree");
+
+  const form = findForm(stringRoot, quality);
+  const chordSymbol = `${rootNote}${QUALITY_SUFFIX[quality]}`;
+
   return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
+    <div className="mx-auto max-w-4xl px-4 py-6">
+      <h1 className="mb-1 text-2xl font-bold text-amber-400">
+        🎸 Guitar-chord
+      </h1>
+      <p className="mb-6 text-xs text-neutral-500">
+        フレットボード上で形と度数で見るコードフォーム集
+      </p>
+
+      {/* 弦ルート（6弦/5弦） */}
+      <div className="mb-3">
+        <div className="mb-1.5 text-[10px] uppercase tracking-wider text-neutral-500">
+          ルートが乗る弦
         </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
+        <div className="inline-flex rounded-lg border border-neutral-800 bg-neutral-900 p-[3px]">
+          {[6, 5].map((s) => (
+            <button
+              key={s}
+              type="button"
+              onClick={() => setStringRoot(s as 6 | 5)}
+              className={`rounded-md px-3 py-1.5 text-xs font-medium transition-colors ${
+                stringRoot === s
+                  ? "bg-amber-400 text-black"
+                  : "text-neutral-400 hover:text-neutral-200"
+              }`}
+            >
+              {s}弦ルート
+            </button>
+          ))}
         </div>
-      </main>
+      </div>
+
+      {/* クオリティ */}
+      <div className="mb-3">
+        <div className="mb-1.5 text-[10px] uppercase tracking-wider text-neutral-500">
+          コードクオリティ
+        </div>
+        <div className="flex flex-wrap gap-1.5">
+          {QUALITIES.map((q) => (
+            <button
+              key={q}
+              type="button"
+              onClick={() => setQuality(q)}
+              className={`rounded-full border px-3 py-1 text-xs transition-colors ${
+                quality === q
+                  ? "border-amber-400 bg-amber-400/20 text-amber-400"
+                  : "border-neutral-700 text-neutral-300 hover:border-amber-400/60"
+              }`}
+            >
+              {QUALITY_LABEL[q]}
+            </button>
+          ))}
+        </div>
+      </div>
+
+      {/* ルート音 */}
+      <div className="mb-4">
+        <div className="mb-1.5 text-[10px] uppercase tracking-wider text-neutral-500">
+          ルート音
+        </div>
+        <div className="flex flex-wrap gap-1.5">
+          {ALL_ROOTS.map((r) => (
+            <button
+              key={r}
+              type="button"
+              onClick={() => setRootNote(r)}
+              className={`rounded-md border px-2.5 py-1 font-mono text-xs transition-colors ${
+                rootNote === r
+                  ? "border-amber-400 bg-amber-400 text-black"
+                  : "border-neutral-700 text-neutral-200 hover:border-amber-400/60"
+              }`}
+            >
+              {r}
+            </button>
+          ))}
+        </div>
+      </div>
+
+      {/* 現在のコードと表示モード */}
+      <div className="mb-3 flex items-center justify-between gap-2">
+        <div className="font-mono text-3xl font-bold leading-none text-amber-400">
+          {chordSymbol}
+        </div>
+        <div className="inline-flex rounded-lg border border-neutral-800 bg-neutral-900 p-[3px]">
+          <button
+            type="button"
+            onClick={() => setDisplay("degree")}
+            className={`rounded-md px-2.5 py-1 text-[11px] transition-colors ${
+              display === "degree"
+                ? "bg-amber-400 text-black"
+                : "text-neutral-400 hover:text-neutral-200"
+            }`}
+          >
+            度数
+          </button>
+          <button
+            type="button"
+            onClick={() => setDisplay("note")}
+            className={`rounded-md px-2.5 py-1 text-[11px] transition-colors ${
+              display === "note"
+                ? "bg-amber-400 text-black"
+                : "text-neutral-400 hover:text-neutral-200"
+            }`}
+          >
+            音名
+          </button>
+        </div>
+      </div>
+
+      {form ? (
+        <Fretboard form={form} rootNote={rootNote} display={display} />
+      ) : (
+        <div className="rounded-xl border border-neutral-800 bg-neutral-900 p-6 text-center text-sm text-neutral-500">
+          フォーム未登録
+        </div>
+      )}
+
+      <div className="mt-3 text-[10px] text-neutral-500">
+        <span className="text-amber-400">●</span> ルート &nbsp;
+        <span className="text-green-400">●</span> その他のコードトーン &nbsp;
+        <span className="text-neutral-400">×</span> 弾かない弦
+      </div>
     </div>
   );
 }
