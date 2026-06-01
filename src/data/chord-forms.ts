@@ -7,7 +7,7 @@ import type { ChordQuality } from "@/lib/music";
 export type FretOffset = number | "X";
 
 export interface ChordForm {
-  stringRoot: 6 | 5;
+  stringRoot: 6 | 5 | 4;
   quality: ChordQuality;
   voicing: [FretOffset, FretOffset, FretOffset, FretOffset, FretOffset, FretOffset];
 }
@@ -29,8 +29,19 @@ export const FORMS: ChordForm[] = [
   { stringRoot: 5, quality: "m7",   voicing: ["X", 0, 2, 0, 1, 0] }, // Am7-shape
   { stringRoot: 5, quality: "dim7", voicing: ["X", 0, 1, -1, 1, "X"] }, // R-♭5-♭♭7-♭3
   { stringRoot: 5, quality: "m7b5", voicing: ["X", 0, 1, 0, 1, "X"] }, // R-♭5-♭7-♭3
+  // ── 4弦ルート（D-shape ファミリー、5/6弦はミュート） ────────────────
+  { stringRoot: 4, quality: "maj",  voicing: ["X", "X", 0, 2, 3, 2] }, // R-5-R-3
+  { stringRoot: 4, quality: "min",  voicing: ["X", "X", 0, 2, 3, 1] }, // R-5-R-♭3
+  { stringRoot: 4, quality: "maj7", voicing: ["X", "X", 0, 2, 2, 2] }, // R-5-7-3
+  { stringRoot: 4, quality: "7",    voicing: ["X", "X", 0, 2, 1, 2] }, // R-5-♭7-3
+  { stringRoot: 4, quality: "m7",   voicing: ["X", "X", 0, 2, 1, 1] }, // R-5-♭7-♭3
+  { stringRoot: 4, quality: "dim7", voicing: ["X", "X", 0, 1, 0, 1] }, // R-♭5-♭♭7-♭3
+  { stringRoot: 4, quality: "m7b5", voicing: ["X", "X", 0, 1, 1, 1] }, // R-♭5-♭7-♭3
 ];
 
-export function findForm(stringRoot: 6 | 5, quality: ChordQuality): ChordForm | undefined {
+export function findForm(
+  stringRoot: 6 | 5 | 4,
+  quality: ChordQuality,
+): ChordForm | undefined {
   return FORMS.find((f) => f.stringRoot === stringRoot && f.quality === quality);
 }

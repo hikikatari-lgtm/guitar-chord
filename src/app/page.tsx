@@ -12,7 +12,7 @@ import { findForm } from "@/data/chord-forms";
 import Fretboard from "@/components/Fretboard";
 
 export default function Home() {
-  const [stringRoot, setStringRoot] = useState<6 | 5>(6);
+  const [stringRoot, setStringRoot] = useState<6 | 5 | 4>(6);
   const [quality, setQuality] = useState<ChordQuality>("maj");
   const [rootNote, setRootNote] = useState<string>("F");
   const [display, setDisplay] = useState<"degree" | "note">("degree");
@@ -35,11 +35,11 @@ export default function Home() {
           ルートが乗る弦
         </div>
         <div className="inline-flex rounded-lg border border-neutral-800 bg-neutral-900 p-[3px]">
-          {[6, 5].map((s) => (
+          {[6, 5, 4].map((s) => (
             <button
               key={s}
               type="button"
-              onClick={() => setStringRoot(s as 6 | 5)}
+              onClick={() => setStringRoot(s as 6 | 5 | 4)}
               className={`rounded-md px-3 py-1.5 text-xs font-medium transition-colors ${
                 stringRoot === s
                   ? "bg-amber-400 text-black"

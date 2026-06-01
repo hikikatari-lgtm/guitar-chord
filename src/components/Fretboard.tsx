@@ -19,10 +19,11 @@ interface Props {
 // すべての押弦フレットが 1 以上に収まるように調整する（可動フォーム前提）
 function computeRootFret(
   rootNote: string,
-  stringRoot: 6 | 5,
+  stringRoot: 6 | 5 | 4,
   voicing: ChordForm["voicing"],
 ): number {
-  const stringIdx = stringRoot === 6 ? 0 : 1; // tuning index
+  // tuning index: 6弦=0, 5弦=1, 4弦=2（stringRoot からの単純な差分で対応）
+  const stringIdx = 6 - stringRoot;
   const openNote = noteIndex(STANDARD_TUNING[stringIdx]);
   const rootIdx = noteIndex(rootNote);
   let fret = (((rootIdx - openNote) % 12) + 12) % 12;
